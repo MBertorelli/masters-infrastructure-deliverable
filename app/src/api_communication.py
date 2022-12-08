@@ -2,13 +2,14 @@ import requests
 import sys
 sys.path.append('..')
 import config
+from typing import List
 
 from src.utils import Game
 
 
 class APICommunication():
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.base_url = config.API_BASE_URL
         self.headers = {
             "X-RapidAPI-Key": config.API_CREDENTIAL,
@@ -16,11 +17,11 @@ class APICommunication():
         }
 
 
-    def _sign_url(self, url):
+    def _sign_url(self, url) -> str:
         return url + f'?key={config.API_KEY}'
 
 
-    def _parse_response(self, response):
+    def _parse_games_response(self, response) -> List[Game]:
         response = response.json()['results']
         
         list_of_games = []
@@ -38,9 +39,29 @@ class APICommunication():
         return list_of_games
 
 
-    def get_list_of_games(self):
+    def _parse_genres_response(self, response):
+        response = response.json()['results']
+
+        available_genres = [item['name'] for item in response]
+
+        return available_genres
+
+
+    def get_list_of_games(self) -> List[Game]:
         games_api_endpoint = self._sign_url(self.base_url + '/games')
+        print(f"Querying to {games_api_endpoint}")
 
         response = requests.request("GET", games_api_endpoint, headers=self.headers)
-        parsed_data = self._parse_response(response)
+        parsed_data = self._parse_games_response(response)
+
+        return parsed_data
+
+    
+    async def get_list_of_genres(self):
+        games_api_endpoint = self._sign_url(self.base_url + '/genres')
+        print(f"Querying to {games_api_endpoint}")
+
+        response = requests.request("GET", games_api_endpoint, headers=self.headers)
+        parsed_data = self._parse_genres_response(response)
+
         return parsed_data
