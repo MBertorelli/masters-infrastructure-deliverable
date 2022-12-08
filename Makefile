@@ -5,7 +5,7 @@ build-images:
 	docker build -t fastapi "${CURRENT_DIR}"
 
 start-web-server: build-images
-	docker run -p 8000:8000 fastapi
+	docker run -p 8000:8000 --mount type=bind,source="${CURRENT_DIR}"/app,target=/app fastapi
 
 start-mysql:
 	echo ${CURRENT_DIR}

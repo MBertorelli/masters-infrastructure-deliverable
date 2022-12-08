@@ -6,9 +6,6 @@ COPY ./requirements.txt /tmp/
 # Install Python dependencies
 RUN pip install -r /tmp/requirements.txt
 
-# Copy Application Source Code
-COPY ./app /app
-
 WORKDIR /app
 
 # Run server
