@@ -28,12 +28,13 @@ async def get_random():
     return list_of_games
 
 
-# @app.get("/get_genres_list")
-# async def get_random():
-#     list_of_genres = api_communication.get_list_of_genres() 
-#     return list_of_genres
-
-
 @app.get("/get_genre/")
 async def get_random(genre: str):
-    return genre
+    list_of_games_by_genre = api_communication.get_list_of_games_by_genre(genre)
+    return list_of_games_by_genre
+
+
+@app.get("/get_info/")
+async def get_random(game_id: str):
+    game = api_communication.search_game(game_id)
+    return game
