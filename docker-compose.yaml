@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  backend:
+    build: .
+    ports:
+      - '8000:8000'
+    volumes:
+      - type: bind
+        source: ./app
+        target: /app
+    working_dir: /app
+    command: uvicorn main:app --reload --host 0.0.0.0
+    depends_on:
+      - "db"
+
+  db:
+    image: mysql/mysql-server:8.0.31
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=etl
+      - MYSQL_USER=etl_user
+      - MYSQL_PASSWORD=etl_password
+      - MYSQL_DATABASE=ETL
+    volumes:
+      - type: bind
+        source: ./db
+        target: /var/lib/mysql

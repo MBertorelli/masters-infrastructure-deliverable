@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Welcome to game recommender app</h1>
+
+    <h4>
+        All game searches are stored to a DB in case you wish to keep track of the games you want to play.
+    </h4>
+
+    <h4> 
+        In case you want to retrieve them, access to endpoint "/dump_db"
+    </h4>
+
+    <p>
+        Endpoints:
+    </p>
+
+    <p>
+        * "/get_random" in order to get first games from the Query Response.
+    </p>
+    <p>
+        * "/get_genre/?genre=GENRE_ID" in order to only retrieve games from a certain genre. Please check for the list of supported genres at the bottom of the page
+    </p>
+    <p>
+        * "/get_info/?game_id=ID" get info from a defined game.
+    </p>
+
+
+    <p>List of Available Genres to use in Query</p>
+
+    {% for genre in genres %}
+
+    <p>* {{ genre }}</p>
+
+    {% endfor %}
+
+</body>
+</html>
