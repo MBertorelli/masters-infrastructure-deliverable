@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from src.api_communication import APICommunication
-
+from src.db_communication import DBCommunication
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -37,4 +37,11 @@ async def get_random(genre: str):
 @app.get("/get_info/")
 async def get_random(game_id: str):
     game = api_communication.search_game(game_id)
+    return game
+
+
+@app.get("/dump_db/")
+async def get_random():
+    dbc = DBCommunication()
+    game = dbc.dump_games_table()
     return game

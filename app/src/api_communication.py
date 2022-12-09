@@ -3,7 +3,7 @@ import sys
 sys.path.append('..')
 import config
 from typing import List
-
+from src.db_communication import DBCommunication
 from src.utils import Game
 
 
@@ -22,6 +22,7 @@ class APICommunication():
 
 
     def _parse_game(self, game) -> Game:
+        game_id = game['id']
         name = game['name']
         release_date = game['released']
         rating = game['rating']
@@ -29,7 +30,7 @@ class APICommunication():
         for genre in game['genres']:
             game_genres.append(genre['name'])
 
-        return Game(name, release_date, rating, game_genres)
+        return Game(game_id, name, release_date, rating, game_genres)
 
 
     def _parse_games_response(self, response) -> List[Game]:
@@ -75,6 +76,9 @@ class APICommunication():
         response = requests.request("GET", games_api_endpoint, headers=self.headers)
         parsed_data = self._parse_games_response(response)
 
+        dbc = DBCommunication()
+        dbc.insert_games(parsed_data)
+
         return parsed_data
 
     
@@ -95,6 +99,9 @@ class APICommunication():
         response = requests.request("GET", games_api_endpoint, headers=self.headers)
         parsed_data = self._parse_games_from_genre(response, genre)
 
+        dbc = DBCommunication()
+        dbc.insert_games(parsed_data)
+
         return parsed_data
 
 
@@ -105,5 +112,8 @@ class APICommunication():
         response = requests.request("GET", games_api_endpoint, headers=self.headers)
         response = response.json()
         game = self._parse_game(response)
+
+        dbc = DBCommunication()
+        dbc.insert_games([game])
 
         return game
