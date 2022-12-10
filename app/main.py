@@ -29,7 +29,7 @@ async def get_random():
 
 
 @app.get("/get_genre/")
-async def get_random(genre: str):
+async def get_genre(genre: str):
     list_of_games_by_genre = api_communication.get_list_of_games_by_genre(genre)
     return list_of_games_by_genre
 
