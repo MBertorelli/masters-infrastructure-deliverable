@@ -99,9 +99,6 @@ class APICommunication():
         response = requests.request("GET", games_api_endpoint, headers=self.headers)
         parsed_data = self._parse_games_from_genre(response, genre)
 
-        dbc = DBCommunication()
-        dbc.insert_games(parsed_data)
-
         return parsed_data
 
 
